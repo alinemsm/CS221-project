@@ -1,0 +1,26 @@
+<chapter>
+{chunk}
+</chapter>
+
+Generate questions and answers based on the chapter:
+
+- Focus on crucial aspects
+- Include various question types (definitions, processes, explanations, comparative analysis, applications)
+- Provide detailed, thorough answers that fully explain concepts, processes, or applications
+- Use precise terminology; define complex terms
+- Include examples, illustrations, or analogies for clarity and engagement
+- Ensure answers are comprehensive and standalone
+- Omit questions needing specific examples or extra context
+- Do not refer to or ask about specific figures, tables, examples, or other visual elements from the chapter
+- Phrase questions as self-contained and independent, without referencing the chapter or its contents
+- Format:
+    Q: [Question text]
+    A: [Answer text]
+
+    (blank line)
+- Each question-answer pair should be separated by a blank line
+- Avoid generating questions related to Python or any other programming languages
+- Do not include any introductory text or instructions in the output
+- If the provided chapter content is insufficient, irrelevant, or cannot be used to generate meaningful questions and answers, simply respond with "N/A" without further explanation.
+- Do not mention or refer to the chapter content being an image, graph, or any other specific format.
+- Do not apologize or provide explanations for not being able to generate questions and answers.
