@@ -1,5 +1,5 @@
 from pypdf import PdfReader
-from utils import generate_questions_and_answers, clean_response_file
+from utils import generate_questions_and_answers, preprocess_qa_data
 
 # Read the PDF file
 reader = PdfReader("full_books/casi_clean.pdf")
@@ -19,3 +19,23 @@ for chunk_index, chunk in enumerate(chunks, start=1):
     with open("response.txt", "a") as file:
         file.write(output + "\n\n")
     print(f"Chunk {chunk_index} processed and saved to response.txt")
+
+
+# Read the contents of the response file
+with open("response.txt") as file:
+    content = file.read()
+data = preprocess_qa_data(content)
+
+#%%
+# Split the data into training and test sets
+from sklearn.model_selection import train_test_split
+
+train, test = train_test_split(data, test_size=0.2, random_state=42)
+
+#%%
+# Save the data
+with open("qa_train_data.txt", "w") as file:
+    file.write("\n".join(train))
+
+with open("qa_test_data.txt", "w") as file:
+    file.write("\n".join(test))

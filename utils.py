@@ -1,6 +1,8 @@
 import anthropic
 import os
 from dotenv import load_dotenv
+from rouge import Rouge
+import json
 load_dotenv()
 
 def get_completion(prompt, MODEL_NAME = "claude-3-opus-20240229"):
@@ -48,22 +50,25 @@ def clean_response_file(file_path, output_file_path):
 
     print(f"File modified successfully. Output saved to {output_file_path}")
 
-def preprocess_qa_data(file_path):
+def preprocess_qa_data(content):
     data = []
+    qa_pairs = content.split("\n\nQ: ")  # Split and remove the first empty question
 
-    with open(file_path) as file:
-        content = file.read()
-        qa_pairs = content.split("\n\nQ: ")[1:]  # Split and remove the first empty question
-
-        for qa_pair in qa_pairs:
-            parts = qa_pair.split("\nA: ", maxsplit=1)
-            if len(parts) == 2:
-                question, answer = parts
-                instruction = question.strip()
-                response = answer.strip()
-                template = "Instruction:\n{}\n\nResponse:\n{}"
-                data.append(template.format(instruction, response))
-            else:
-                print(f"Skipping malformed question-answer pair: {qa_pair}")
+    for qa_pair in qa_pairs:
+        parts = qa_pair.split("\nA: ", maxsplit=1)
+        if len(parts) == 2:
+            question, answer = parts
+            instruction = question.strip()
+            response = answer.strip()
+            template = "Instruction:\n{}\n\nResponse:\n{}"
+            data.append(template.format(instruction, response))
+        else:
+            print(f"Skipping malformed question-answer pair")
 
     return data
+
+# Function to compute ROUGE-L metric
+def compute_rouge_l(reference, hypothesis):
+    rouge = Rouge()
+    scores = rouge.get_scores(hypothesis, reference)
+    return scores[0]['rouge-l']['f']
