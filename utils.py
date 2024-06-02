@@ -1,7 +1,7 @@
 import anthropic
 import os
 from dotenv import load_dotenv
-from rouge import Rouge
+# from rouge import Rouge
 import json
 load_dotenv()
 
@@ -15,9 +15,9 @@ def get_completion(prompt, MODEL_NAME = "claude-3-opus-20240229"):
         }]
     ).content
 
-def generate_questions_and_answers(client, chunk, prompt_template):
+def generate_questions_and_answers(chunk, prompt_template):
     prompt = prompt_template.format(chunk=chunk)
-    completion = get_completion(client, prompt)
+    completion = get_completion(prompt)
     completion_contents = [completion.text for completion in completion]
     output = "\n".join(completion_contents)
     output = output.replace("Question:", "Q:").replace("Answer:", "A:")
@@ -60,7 +60,7 @@ def preprocess_qa_data(content):
             question, answer = parts
             instruction = question.strip()
             response = answer.strip()
-            template = "Instruction:\n{}\n\nResponse:\n{}"
+            template = "Instruction:\n{}\nResponse:\n{}"
             data.append(template.format(instruction, response))
         else:
             print(f"Skipping malformed question-answer pair")
