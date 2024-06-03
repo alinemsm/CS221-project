@@ -1,8 +1,10 @@
 import anthropic
 import os
 from dotenv import load_dotenv
-# from rouge import Rouge
+from rouge import Rouge
+import re
 import json
+import pandas as pd
 load_dotenv()
 
 def get_completion(prompt, MODEL_NAME = "claude-3-opus-20240229"):
@@ -72,3 +74,27 @@ def compute_rouge_l(reference, hypothesis):
     rouge = Rouge()
     scores = rouge.get_scores(hypothesis, reference)
     return scores[0]['rouge-l']['f']
+
+def extract_gpt_scores(file_content):
+    questions = re.split(r'(Question \d+:)', file_content)[1:]
+    data = []
+
+    for i in range(0, len(questions), 2):
+        question_number = re.search(r'Question (\d+):', questions[i]).group(1)
+        question_text = questions[i + 1]
+
+        answers = re.findall(r'A(\d+):\s*(?:.*\n)*?\s*Total:\s*(\d+(?:\.\d+)?)', question_text)
+        answer_scores = {f'A{answer_number} Total Score': float(total_score) for answer_number, total_score in answers}
+
+        superior_tag_match = re.search(r'Superior:\s*(?:(\d+)|Answer\s+(\d+))(?:[^0-9]*)?', question_text, re.IGNORECASE)
+        superior_tag = superior_tag_match.group(1) or superior_tag_match.group(2) if superior_tag_match else None
+
+        question_data = {'Question': int(question_number), 'Superior': int(superior_tag) if superior_tag else None}
+        question_data.update(answer_scores)
+        data.append(question_data)
+
+    return pd.DataFrame(data)
+
+def load_json(path):
+    with open(f"{path}.json", "r") as f:
+        return json.load(f)

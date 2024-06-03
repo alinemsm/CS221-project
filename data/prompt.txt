@@ -2,7 +2,7 @@
 {chunk}
 </chapter>
 
-Generate questions and answers based on the chapter:
+Generate 20 questions and answers based on the chapter:
 
 - Focus on crucial aspects
 - Include various question types (definitions, processes, explanations, comparative analysis, applications)
