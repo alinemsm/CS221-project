@@ -48,6 +48,9 @@ This project aims to create customised, domain-specific language models by fine-
    notebooks/evaluation_chatgpt.ipynb
    ```
 
+6. Fine-tuned model checkpoints [here](https://drive.google.com/drive/folders/1Dt2HY7cDjHxQjYQixyQAblB-CcZs2Bki?usp=share_link).
+
+
 ## Acknowledgements
 This project benefited from the guidance and support of the Stanford CS221 course staff, including the teaching team and the course TAs, specially Rohan Taori.
 
