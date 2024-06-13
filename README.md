@@ -1,4 +1,4 @@
-# Customised LLMs from Specialised Documents
+# Efficient Domain-Specific Language Models: Fine-Tuning Gemma-2b-it for Data Science
 
 This project aims to create customised, domain-specific language models by fine-tuning small, open-source models using curated domain knowledge from specialised documents. The focus is on the field of data science, leveraging high-quality textbooks to generate synthetic question-answer datasets for fine-tuning.
 
